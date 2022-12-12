@@ -64,37 +64,57 @@ maze_init[starting_height][starting_width-1] = wall
 maze_init[starting_height][starting_width+1] = wall
 maze_init[starting_height+1][starting_width] = wall
 
-def surroundingCells(rand_wall):
+
+# in method miad 4 jahat wall samte raste starting point ra check mikonad va 1 ra return mikonad
+# dar asl moshakash mikonad atrafe wall chand block c vojod darad
+
+def surroundingCells(rand_wall): # check how many 4 side of block is c 
     s_cells = 0
-    if (maze_init[rand_wall[0]-1][rand_wall[1]] == 'c'):
+    if (maze_init[rand_wall[0]-1][rand_wall[1]] == 'c'): # block up is "c"
         s_cells += 1
-    if (maze_init[rand_wall[0]+1][rand_wall[1]] == 'c'):
+    if (maze_init[rand_wall[0]+1][rand_wall[1]] == 'c'): # block down is "c"
         s_cells += 1
-    if (maze_init[rand_wall[0]][rand_wall[1]-1] == 'c'):
+    if (maze_init[rand_wall[0]][rand_wall[1]-1] == 'c'): # block right is "c"
         s_cells +=1
-    if (maze_init[rand_wall[0]][rand_wall[1]+1] == 'c'):
+    if (maze_init[rand_wall[0]][rand_wall[1]+1] == 'c'): # block left is "C"
         s_cells += 1    
     return s_cells
+
+def delete_wall(rand_wall):
+    for wall in walls:
+        if (wall[0] == rand_wall[0] and wall[1] == rand_wall[1]):
+            walls.remove(wall)  
 
 while walls:
     rand_wall = walls[int(random.random()*len(walls))-1]
 
-    print(surroundingCells(rand_wall))
-
     if rand_wall[1] != 0:
-        if maze_init[rand_wall[0]][rand_wall[1]-1] == 'u' and maze_init[rand_wall[0]][rand_wall[1]+1] == 'c':
-            print(1)
+        if maze_init[rand_wall[0]][rand_wall[1]-1] == 'u' and maze_init[rand_wall[0]][rand_wall[1]+1] == 'c': #check left is 'u' and right is 'c' of block
+            print("case 1")
+            s_cells = surroundingCells(rand_wall)
+            if s_cells < 2:
+                maze_init[rand_wall[0]][rand_wall[1]] = cell
+                if (rand_wall[0] != 0):
+                    if (maze_init[rand_wall[0]-1][rand_wall[1]] != 'c'):
+                        maze_init[rand_wall[0]-1][rand_wall[1]] = wall
+                    if ([rand_wall[0]-1, rand_wall[1]] not in walls):
+                        walls.append([rand_wall[0]-1, rand_wall[1]])
+            delete_wall(rand_wall)
+            continue
+        continue
+
 
     if rand_wall[0] != 0:   
-        if maze_init[rand_wall[0]-1][rand_wall[1]] == 'u' and maze_init[rand_wall[0]+1][rand_wall[1]+1] == 'c':
-            print(2)
+        if maze_init[rand_wall[0]-1][rand_wall[1]] == 'u' and maze_init[rand_wall[0]+1][rand_wall[1]+1] == 'c': # check up is "u" and down-right is "c"
+            print("case 2")
 
     if rand_wall[0] != height-1:
-        if maze_init[rand_wall[0]+1][rand_wall[1]] == 'u' and maze_init[rand_wall[0]-1][rand_wall[1]] == 'c':
-            print(3)
+        if maze_init[rand_wall[0]+1][rand_wall[1]] == 'u' and maze_init[rand_wall[0]-1][rand_wall[1]] == 'c': # check down is "u" and up is "C"
+            print("case 3")
 
     if rand_wall[1] != width-1:
-        if maze_init[rand_wall[0]][rand_wall[1]+1] == 'u' and maze_init[rand_wall[0]][rand_wall[1]-1] == 'c':
-            print(4)
+        if maze_init[rand_wall[0]][rand_wall[1]+1] == 'u' and maze_init[rand_wall[0]][rand_wall[1]-1] == 'c': # check down is "u" and left is "C"
+            print("case 4")
 
     
+
